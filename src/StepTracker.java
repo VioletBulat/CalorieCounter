@@ -1,19 +1,25 @@
 import java.util.Scanner;
 
+// В данном классе реализована логика по сохранению и изменению количества шагов
+
 class StepTracker {
     Scanner scanner;
     Converter converter = new Converter();
+    // Массив объектов класса для обозначения количества месяцев
     MonthData[] monthToData = new MonthData[12];
+    // Цель шагов на день по-умолчанию
     int goalByStepsPerDay = 10000;
 
+    // Конструктор, принимающий количество шагов
     StepTracker(Scanner scan) {
         scanner = scan;
 
-        for(int i = 0; i < monthToData.length; i++) {
-            monthToData[i] = new MonthData();
+        for(int month = 0; month  < monthToData.length; month++) {
+            monthToData[month] = new MonthData();
         }
     }
 
+    // Метод, принимающий количество шагов за день
     void addNewNumberStepsPerDay() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Введите номер месяца: ");
@@ -37,10 +43,12 @@ class StepTracker {
             return;
         }
 
-        MonthData monthData = monthToData[month - 1];
-        monthData.days[day - 1] = steps;
+        // Сохраняем в переменную steps количество шагов и
+        // передаем это значение в массив дней в массиве месяцев
+        monthToData[month - 1].days[day - 1] = steps;
     }
 
+    // Метод для ввода цели шагов на день
     void changeStepGoal() {
         System.out.println("Веедите цель по количеству шагов на день: ");
         int stepGoal = scanner.nextInt();
@@ -51,6 +59,7 @@ class StepTracker {
         }
     }
 
+    // Метод для подсчета всей статистики за месяц
     void printStatistic() {
         System.out.println("Введите номер месяца, за который нужно вывести статистику: ");
         int monthStatistic = scanner.nextInt();
@@ -64,7 +73,7 @@ class StepTracker {
         System.out.println("Максимальное пройденное количество шагов в месяце: " +
                 monthToData[monthStatistic - 1].maxSteps());
 
-        int avg = steps / 30;
+        int avg = steps / monthToData[monthStatistic - 1].days.length;
         System.out.println("Среднее количество шагов: " + avg);
 
         System.out.println("Пройденная дистанция (в км): " +
